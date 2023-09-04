@@ -10,17 +10,28 @@ import AllExpensives from "./screens/AllExpensives";
 
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "./utils/styles";
+const { colors } = GlobalStyles;
+
+import IconButton from "./components/ui/IconButton";
 
 // expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 
 const ExpensesOverview = () => {
-	const { colors } = GlobalStyles;
-
 	return (
 		<BottomTabs.Navigator
-			screenOptions={{
+			screenOptions={({ navigation }) => ({
+				headerRight: ({ tintColor }) => (
+					<IconButton
+						name={"add"}
+						color={tintColor}
+						size={24}
+						onPress={() => {
+							navigation.navigate("ManageExpenses");
+						}}
+					/>
+				),
 				headerStyle: {
 					backgroundColor: colors.primary500
 				},
@@ -34,7 +45,7 @@ const ExpensesOverview = () => {
 					// height: 100
 				},
 				tabBarActiveTintColor: colors.accent500
-			}}
+			})}
 		>
 			<BottomTabs.Screen
 				name="RecentExpensives"
@@ -67,7 +78,14 @@ export default function App() {
 		<>
 			<StatusBar style="light" />
 			<NavigationContainer>
-				<Stack.Navigator>
+				<Stack.Navigator
+					screenOptions={{
+						headerStyle: {
+							backgroundColor: colors.primary500
+						},
+						headerTintColor: "white"
+					}}
+				>
 					<Stack.Screen
 						name="ExpensesOverview"
 						component={ExpensesOverview}
@@ -78,6 +96,9 @@ export default function App() {
 					<Stack.Screen
 						name="ManageExpenses"
 						component={ManageExpensives}
+						options={{
+							presentation: "modal"
+						}}
 					/>
 				</Stack.Navigator>
 			</NavigationContainer>
