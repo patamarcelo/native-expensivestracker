@@ -8,9 +8,14 @@ import { GlobalStyles } from "../utils/styles";
 import Button from "../components/ui/Button";
 const { colors } = GlobalStyles;
 
+import { useContext } from "react";
+import { ExpensesContext } from "../store/expenses-context";
+
 const ManageExpensives = () => {
 	const route = useRoute();
 	const navigation = useNavigation();
+
+	contextExp = useContext(ExpensesContext);
 
 	const itemRoute = route.params?.item;
 	const isEditiing = !!itemRoute;
@@ -25,6 +30,7 @@ const ManageExpensives = () => {
 		navigation.goBack();
 	};
 	const deleteExpenseHandler = () => {
+		contextExp.deleteExpense(itemRoute.id);
 		closeModalhandler();
 	};
 
@@ -33,6 +39,20 @@ const ManageExpensives = () => {
 	};
 
 	const confirmHandler = () => {
+		if (isEditiing) {
+			contextExp.updateExpense(itemRoute.id, {
+				description: "test!!!",
+				amount: 29.99,
+				date: new Date("2023-09-02")
+			});
+		} else {
+			contextExp.addExpense({
+				description: "test",
+				amount: 19.99,
+				date: new Date("2023-09-05")
+			});
+		}
+
 		closeModalhandler();
 	};
 

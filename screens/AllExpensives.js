@@ -3,10 +3,18 @@ import ExpensesOutput from "../components/Expenses/ExpensesOutput";
 import { GlobalStyles } from "../utils/styles";
 const { colors } = GlobalStyles;
 
+import { useContext } from "react";
+import { ExpensesContext } from "../store/expenses-context";
+
 const AllExpensives = () => {
+	const expenses = useContext(ExpensesContext);
 	return (
 		<View style={styles.mainContainer}>
-			<ExpensesOutput expensesPeriod="Total" />
+			<ExpensesOutput
+				expenses={expenses.expenses}
+				expensesPeriod="Total"
+				fallback="No Register Expenses found!!!"
+			/>
 		</View>
 	);
 };

@@ -13,6 +13,7 @@ import { GlobalStyles } from "./utils/styles";
 const { colors } = GlobalStyles;
 
 import IconButton from "./components/ui/IconButton";
+import ExpensesContextProvider from "./store/expenses-context";
 
 // expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view
 const Stack = createNativeStackNavigator();
@@ -77,31 +78,33 @@ export default function App() {
 	return (
 		<>
 			<StatusBar style="light" />
-			<NavigationContainer>
-				<Stack.Navigator
-					screenOptions={{
-						headerStyle: {
-							backgroundColor: colors.primary500
-						},
-						headerTintColor: "white"
-					}}
-				>
-					<Stack.Screen
-						name="ExpensesOverview"
-						component={ExpensesOverview}
-						options={{
-							headerShown: false
+			<ExpensesContextProvider>
+				<NavigationContainer>
+					<Stack.Navigator
+						screenOptions={{
+							headerStyle: {
+								backgroundColor: colors.primary500
+							},
+							headerTintColor: "white"
 						}}
-					/>
-					<Stack.Screen
-						name="ManageExpenses"
-						component={ManageExpensives}
-						options={{
-							presentation: "modal"
-						}}
-					/>
-				</Stack.Navigator>
-			</NavigationContainer>
+					>
+						<Stack.Screen
+							name="ExpensesOverview"
+							component={ExpensesOverview}
+							options={{
+								headerShown: false
+							}}
+						/>
+						<Stack.Screen
+							name="ManageExpenses"
+							component={ManageExpensives}
+							options={{
+								presentation: "modal"
+							}}
+						/>
+					</Stack.Navigator>
+				</NavigationContainer>
+			</ExpensesContextProvider>
 		</>
 	);
 }
