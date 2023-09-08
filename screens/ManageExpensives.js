@@ -10,6 +10,7 @@ const { colors } = GlobalStyles;
 
 import { useContext } from "react";
 import { ExpensesContext } from "../store/expenses-context";
+import FormExpenses from "../components/ExpensesForm/FormExpenses";
 
 const ManageExpensives = () => {
 	const route = useRoute();
@@ -38,19 +39,11 @@ const ManageExpensives = () => {
 		closeModalhandler();
 	};
 
-	const confirmHandler = () => {
+	const confirmHandler = (expenseData) => {
 		if (isEditiing) {
-			contextExp.updateExpense(itemRoute.id, {
-				description: "test!!!",
-				amount: 29.99,
-				date: new Date("2023-09-02")
-			});
+			contextExp.updateExpense(itemRoute.id, expenseData);
 		} else {
-			contextExp.addExpense({
-				description: "test",
-				amount: 19.99,
-				date: new Date("2023-09-05")
-			});
+			contextExp.addExpense(expenseData);
 		}
 
 		closeModalhandler();
@@ -58,18 +51,13 @@ const ManageExpensives = () => {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.buttonContainer}>
-				<Button
-					mode="flat"
-					onPress={cancelHandler}
-					style={styles.buttonStyle}
-				>
-					Cancel
-				</Button>
-				<Button onPress={confirmHandler} style={styles.buttonStyle}>
-					{isEditiing ? "update" : "Add"}
-				</Button>
-			</View>
+			<FormExpenses
+				onSubmit={confirmHandler}
+				onCancel={cancelHandler}
+				isEditiing={isEditiing}
+				item={itemRoute}
+			/>
+
 			{isEditiing && (
 				<View style={styles.deleteContainer}>
 					<IconButton
@@ -87,15 +75,6 @@ const ManageExpensives = () => {
 export default ManageExpensives;
 
 const styles = StyleSheet.create({
-	buttonContainer: {
-		flexDirection: "row",
-		justifyContent: "center",
-		alignItems: "center"
-	},
-	buttonStyle: {
-		minWidth: 120,
-		marginHorizontal: 8
-	},
 	deleteContainer: {
 		marginTop: 16,
 		paddingTop: 8,
